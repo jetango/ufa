@@ -292,38 +292,4 @@ class Resource {
     // END: new functions when unifying.
 
     // functions below in CRM, Agent, TW, PC, Bureau
-
-    //TODO::Remove
-    public static function addJS($data = array()) {
-        self::add_external_js($data);
-    }
-
-    //TODO::Remove
-    public static function addCSS($data = array()) {
-        self::add_external_css($data);
-    }
-
-    //TODO::Remove
-    public static function getJS() {
-        return self::load_scripts();
-    }
-
-    //TODO::Remove
-    public static function getCSS()
-    {
-        return self::load_styles();
-    }
-
-    /**
-     * TODO::Remove
-     * @return array
-     */
-    public static function static_resources () {
-        $resources = array(
-            'js' => self::_static_javascript_resources(),
-            'css' => self::_static_style_resources()
-        );
-
-        return $resources;
-    }
 }

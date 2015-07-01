@@ -47,8 +47,6 @@ abstract class BaseController extends LaravelController {
                 array(
                     'debug' => Resource::$debug,
                     'title' => $this->title,
-                    'host' => Resource::$host,//TODO::Remove
-                    'dest_dir' => Resource::$dest_dir,//TODO::Remove
                 ),
                 $this->load_more_view_data(),
                 $data
@@ -75,7 +73,6 @@ abstract class BaseController extends LaravelController {
         $user_agent = Request::header('User-Agent');
         $client = self::CONST_BROWSER;
 
-        //TODO::change logic
         // App
         if (preg_match('/ClientType\/APP/', $user_agent) || self::CONST_WEILIAO === Request::get('from')) {
             return self::CONST_APP;
