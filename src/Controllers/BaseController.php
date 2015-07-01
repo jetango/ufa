@@ -47,6 +47,7 @@ abstract class BaseController extends LaravelController {
                 array(
                     'debug' => Resource::$debug,
                     'title' => $this->title,
+                    'dest_dir' => Resource::$dest_dir,
                 ),
                 $this->load_more_view_data(),
                 $data
