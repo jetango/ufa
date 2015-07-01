@@ -1,4 +1,4 @@
-<?php namespace Angejia\Ufa\Http\Controllers;
+<?php namespace Angejia\Ufa\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as LaravelController;
