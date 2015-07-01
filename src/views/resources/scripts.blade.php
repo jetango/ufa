@@ -1,12 +1,12 @@
 <?php
-    $static_resources = \Ufa\Helpers\Resource::load_scripts();
-    $main = \Ufa\Helpers\Resource::$host . 'dist/main.min.js';
-    $main_ie = \Ufa\Helpers\Resource::$host . 'dist/main-ie.min.js';
-    $params = \Ufa\Helpers\Resource::get_params();
+    $static_resources = \Angejia\Ufa\Helpers\Resource::load_scripts();
+    $main = \Angejia\Ufa\Helpers\Resource::$host . 'dist/main.min.js';
+    $main_ie = \Angejia\Ufa\Helpers\Resource::$host . 'dist/main-ie.min.js';
+    $params = \Angejia\Ufa\Helpers\Resource::get_params();
 ?>
 
 {{-- Load main script --}}
-@if(\Ufa\Helpers\Resource::$compatible_ie)
+@if(\Angejia\Ufa\Helpers\Resource::$compatible_ie)
     <!--[if IE]>
     <script src="{{$main_ie}}" type="text/javascript"></script>
     <![endif]-->

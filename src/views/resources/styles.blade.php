@@ -1,11 +1,11 @@
 <?php
-    $static_resources = \Ufa\Helpers\Resource::load_styles();
-    $main = \Ufa\Helpers\Resource::$host . 'dist/main.min.css';
-    $main_ie = \Ufa\Helpers\Resource::$host . 'dist/main-ie.min.css';
+    $static_resources = \Angejia\Ufa\Helpers\Resource::load_styles();
+    $main = \Angejia\Ufa\Helpers\Resource::$host . 'dist/main.min.css';
+    $main_ie = \Angejia\Ufa\Helpers\Resource::$host . 'dist/main-ie.min.css';
 ?>
 
 {{-- Load main style --}}
-@if(\Ufa\Helpers\Resource::$compatible_ie)
+@if(\Angejia\Ufa\Helpers\Resource::$compatible_ie)
     <!--[if IE]>
     <link href="{{$main_ie}}" rel="stylesheet"/>
     <![endif]-->

@@ -1,10 +1,10 @@
-<?php namespace Ufa\Http\Controllers;
+<?php namespace Angejia\Ufa\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as LaravelController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Config;
-use Ufa\Helpers\Resource as Resource;
+use Angejia\Ufa\Helpers\Resource as Resource;
 
 abstract class BaseController extends LaravelController {
 
