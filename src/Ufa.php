@@ -1,4 +1,4 @@
-<?php namespace Angejia\Ufa\Helpers;
+<?php namespace Angejia\Ufa;
 
 use Config;
 
