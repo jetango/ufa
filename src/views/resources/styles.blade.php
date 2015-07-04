@@ -1,5 +1,5 @@
 <?php
-    $static_resources = ufa()->load_styles();
+    $static_resources = ufa()->loadStyles();
     $main = ufa()->realPath('main', 'css');
     $main_ie = ufa()->realPath('main-ie', 'css');
 ?>

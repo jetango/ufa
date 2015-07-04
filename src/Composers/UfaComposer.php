@@ -34,19 +34,10 @@ class UfaComposer
      */
     public function compose(View $view)
     {
-        echo "<h1>View: {$view->name()}</h1>";
-
-//        $data = $view->getData();//TODO::Remove
-
-        //$view->name();//TODO::Set default file name.
+        ufa()->setName($view->name());
         $viewData = ufa()->getData();
-        print_r($viewData);
         foreach($viewData as $key => $value) {
             $view->with($key, $value);
         }
-//        if (! isset($data['title'])) {
-//            $view->with('title', '');
-//        }
-
     }
 }

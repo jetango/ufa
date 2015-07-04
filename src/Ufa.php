@@ -10,23 +10,20 @@ class Ufa {
     public $debug = false;
     public $dest_dir = 'dist/';
     public $compatible_ie = false;
-
     public $data = [];
 
     private $host = '/';
 
     private $device_types = ['mobile', 'wechat'];//TODO::Add later.
     private $default = 'mobile';
-    private $main_filename = '';//TODO::Refine
+    private $name = 'page';
     private $params = array();
 
     function __construct() {
-        echo 'Construct<br>';
         $this->debug = Config::get('app.debug');
         $this->host = Config::get('page.host', '/');
         $this->dest_dir = $this->host . ($this->debug ? '' : 'dist/');
         $this->compatible_ie = Config::get('page.compatible_ie', false);
-        echo $this->host, '<br>';
     }
 
     private $external_resources = array(
@@ -59,6 +56,12 @@ class Ufa {
 
     }
 
+    public function setName($name) {
+        if (! $this->name) {
+            $this->name = $name;
+        }
+    }
+
     public function getCompatible()
     {
         return $this->compatible_ie;
@@ -83,7 +86,7 @@ class Ufa {
      * @param $data
      * @param $client_type: app or mobile.
      */
-    public function add_resources($source, $resource_type, $data, $client_type) {
+    public function addResources($source, $resource_type, $data, $client_type) {
         if (! empty($data)) {
             if ($source === self::SOURCE_INTERNAL) {
                 $resources = & $this->internal_resources[$resource_type];
@@ -111,7 +114,7 @@ class Ufa {
      * @param string $client_type
      * @return array
      */
-    public function get_resources($source, $resource_type, $client_type = '') {
+    public function getResources($source, $resource_type, $client_type = '') {
 
         if ($source === self::SOURCE_INTERNAL) {
             $resources = & $this->internal_resources[$resource_type];
@@ -130,33 +133,33 @@ class Ufa {
      * @param bool $is_pure
      * @return array
      */
-    public function load_resources($client_type = '', $is_pure = false) {
+    public function loadResources($client_type = '', $is_pure = false) {
 
         $all_resources = [
-            'js' => self::load_scripts($client_type, $is_pure),
-            'css' => self::load_styles($client_type, $is_pure)
+            'js' => self::loadScripts($client_type, $is_pure),
+            'css' => self::loadStyles($client_type, $is_pure)
         ];
 
         return $all_resources;
     }
 
-    public function load_styles($client_type = '', $is_pure = false) {
+    public function loadStyles($client_type = '', $is_pure = false) {
         $resources = [
-            'internal' => $this->_load_tool(self::SOURCE_INTERNAL, 'css', $client_type, $is_pure),
-            'external' => $this->_load_tool(self::SOURCE_EXTERNAL, 'css', $client_type, $is_pure),
+            'internal' => $this->_loadTool(self::SOURCE_INTERNAL, 'css', $client_type, $is_pure),
+            'external' => $this->_loadTool(self::SOURCE_EXTERNAL, 'css', $client_type, $is_pure),
         ];
-        $this->_suffix_tool($resources['internal'], 'css');
-        $this->_suffix_tool($resources['external'], 'css');
+        $this->_suffixTool($resources['internal'], 'css');
+        $this->_suffixTool($resources['external'], 'css');
         return $resources;
     }
 
-    public function load_scripts($client_type = '', $is_pure = false) {
+    public function loadScripts($client_type = '', $is_pure = false) {
         $resources = [
-            'internal' => $this->_load_tool(self::SOURCE_INTERNAL, 'js', $client_type, $is_pure),
-            'external' => $this->_load_tool(self::SOURCE_EXTERNAL, 'js', $client_type, $is_pure),
+            'internal' => $this->_loadTool(self::SOURCE_INTERNAL, 'js', $client_type, $is_pure),
+            'external' => $this->_loadTool(self::SOURCE_EXTERNAL, 'js', $client_type, $is_pure),
         ];
-        $this->_suffix_tool($resources['internal'], 'js');
-        $this->_suffix_tool($resources['external'], 'js');
+        $this->_suffixTool($resources['internal'], 'js');
+        $this->_suffixTool($resources['external'], 'js');
         return $resources;
     }
 
@@ -166,7 +169,7 @@ class Ufa {
      * @param $resource_type
      * @return mixed
      */
-    private function _suffix_tool(& $resources, $resource_type) {
+    private function _suffixTool(& $resources, $resource_type) {
         foreach($resources as & $val) {
             $val = $this->realPath($val, $resource_type, $this->dest_dir . $resource_type . '/');
         }
@@ -181,18 +184,18 @@ class Ufa {
      * @param bool $is_pure
      * @return array
      */
-    private function _load_tool($source, $resource_type, $client_type, $is_pure = false) {
+    private function _loadTool($source, $resource_type, $client_type, $is_pure = false) {
         if ($is_pure) {
-            return $this->get_resources($source, $resource_type, $client_type);
+            return $this->getResources($source, $resource_type, $client_type);
         }
         $default = $client_type ? $client_type : $this->default;
         if ($default != $this->default) {
             $resources = array_unique(array_merge(
-                $this->get_resources($source, $resource_type, ''),
-                $this->get_resources($source, $resource_type, $client_type)
+                $this->getResources($source, $resource_type, ''),
+                $this->getResources($source, $resource_type, $client_type)
             ), SORT_REGULAR);
         } else {
-            $resources = $this->get_resources($source, $resource_type, $default);
+            $resources = $this->getResources($source, $resource_type, $default);
         }
 
         return $resources;
@@ -203,8 +206,8 @@ class Ufa {
      * @param array $data
      * @param string $client_type
      */
-    public function add_external_resources($resource_type, $data = array(), $client_type = '') {
-        self::add_resources(self::SOURCE_EXTERNAL, $resource_type, $data, $client_type);
+    public function addExternals($resource_type, $data = array(), $client_type = '') {
+        self::addResources(self::SOURCE_EXTERNAL, $resource_type, $data, $client_type);
     }
 
     /**
@@ -212,8 +215,8 @@ class Ufa {
      * @param $client_type string mobile or wechat .etc.
      * @return array
      */
-    public function get_external_resources($resource_type, $client_type = '') {
-        return self::get_resources(self::SOURCE_EXTERNAL, $resource_type, $client_type);
+    public function getExternalResources($resource_type, $client_type = '') {
+        return self::getResources(self::SOURCE_EXTERNAL, $resource_type, $client_type);
     }
 
     /**
@@ -221,8 +224,8 @@ class Ufa {
      * @param array $data
      * @param string $client_type
      */
-    public function add_internal_resources($resource_type, $data = array(), $client_type = '') {
-        self::add_resources(self::SOURCE_INTERNAL, $resource_type, $data, $client_type);
+    public function addInternalResources($resource_type, $data = array(), $client_type = '') {
+        self::addResources(self::SOURCE_INTERNAL, $resource_type, $data, $client_type);
     }
 
     /**
@@ -230,40 +233,40 @@ class Ufa {
      * @param $client_type string mobile or wechat .etc.
      * @return array
      */
-    public function get_internal_resources($resource_type, $client_type = '') {
-        return self::get_resources(self::SOURCE_INTERNAL, $resource_type, $client_type);
+    public function getInternalResources($resource_type, $client_type = '') {
+        return self::getResources(self::SOURCE_INTERNAL, $resource_type, $client_type);
     }
 
     /**
      * @param array $data
      * @param string $type client type.
      */
-    public function add_external_js($data = array(), $type = '') {
-        self::add_external_resources('js', $data, $type);
+    public function addExternalJs($data = array(), $type = '') {
+        self::addExternals('js', $data, $type);
     }
 
     /**
      * @param array $data
      * @param string $type client type.
      */
-    public function add_external_css($data = array(), $type = '') {
-        self::add_external_resources('css', $data, $type);
+    public function addExternalCss($data = array(), $type = '') {
+        self::addExternals('css', $data, $type);
     }
 
     /**
      * @param array $data
      * @param string $type client type.
      */
-    public function add_internal_css($data = array(), $type = '') {
-        self::add_internal_resources('css', $data, $type);
+    public function addInternalCss($data = array(), $type = '') {
+        self::addInternalResources('css', $data, $type);
     }
 
     /**
      * @param array $data
      * @param string $type client type.
      */
-    public function add_internal_js($data = array(), $type = '') {
-        self::add_internal_resources('js', $data, $type);
+    public function addInternalJs($data = array(), $type = '') {
+        self::addInternalResources('js', $data, $type);
     }
 
     /**
@@ -271,7 +274,7 @@ class Ufa {
      * @param $value
      * @param string $key
      */
-    public function add_param($value, $key = '') {
+    public function addParam($value, $key = '') {
         if ($key) {
             $param = isset($this->params[$key]) ? $this->params[$key] : array();
             $this->params[$key] = array_merge($param, $value);
@@ -286,7 +289,7 @@ class Ufa {
      * @param $key
      * @return array
      */
-    public function get_param($key) {
+    public function getParam($key) {
         return isset($this->params[$key]) ? $this->params[$key] : array();
     }
 
@@ -294,7 +297,7 @@ class Ufa {
      * Get all parameters.
      * @return array
      */
-    public function get_params() {
+    public function getParams() {
         return $this->params;
     }
 

@@ -1,8 +1,8 @@
 <?php
-    $static_resources = ufa()->load_scripts();
+    $static_resources = ufa()->loadScripts();
     $main = ufa()->realPath('main', 'js');
     $main_ie = ufa()->realPath('main-ie', 'js');
-    $params = ufa()->get_params();
+    $params = ufa()->getParams();
 ?>
 
 {{-- Load main script --}}
