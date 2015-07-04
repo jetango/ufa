@@ -34,6 +34,7 @@ class UfaComposer
      */
     public function compose(View $view)
     {
+        echo '<h1>Composer</h1>';
         $data = $view->getData();
         if (! isset($data['title'])) {
             $view->with('title', '');

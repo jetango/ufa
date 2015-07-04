@@ -7,10 +7,11 @@ class Ufa {
     const SOURCE_EXTERNAL = 'external';
     const SOURCE_INTERNAL = 'internal';
 
-    private $debug = false;
+    public $debug = false;
+    public $dest_dir = 'dist/';
+    public $compatible_ie = false;
+
     private $host = '/';
-    private $dest_dir = 'dist/';
-    private $compatible_ie = false;
 
     private $device_types = ['mobile', 'wechat'];//TODO::Add later.
     private $default = 'mobile';
@@ -41,7 +42,7 @@ class Ufa {
 //        $this->compatible_ie = Config::get('page.compatible_ie', false);
     }
 
-    public function realPath($path, $resource_type, $dest_dir = '') {
+    public function realPath($path, $resource_type = 'js', $dest_dir = null) {
 
         if ($this->debug) {
             $path .= '.' . $resource_type;
@@ -138,21 +139,21 @@ class Ufa {
 
     public function load_styles($client_type = '', $is_pure = false) {
         $resources = [
-            'internal' => self::_load_tool(self::SOURCE_INTERNAL, 'css', $client_type, $is_pure),
-            'external' => self::_load_tool(self::SOURCE_EXTERNAL, 'css', $client_type, $is_pure),
+            'internal' => $this->_load_tool(self::SOURCE_INTERNAL, 'css', $client_type, $is_pure),
+            'external' => $this->_load_tool(self::SOURCE_EXTERNAL, 'css', $client_type, $is_pure),
         ];
-        self::_suffix_tool($resources['internal'], 'css');
-        self::_suffix_tool($resources['external'], 'css');
+        $this->_suffix_tool($resources['internal'], 'css');
+        $this->_suffix_tool($resources['external'], 'css');
         return $resources;
     }
 
     public function load_scripts($client_type = '', $is_pure = false) {
         $resources = [
-            'internal' => self::_load_tool(self::SOURCE_INTERNAL, 'js', $client_type, $is_pure),
-            'external' => self::_load_tool(self::SOURCE_EXTERNAL, 'js', $client_type, $is_pure),
+            'internal' => $this->_load_tool(self::SOURCE_INTERNAL, 'js', $client_type, $is_pure),
+            'external' => $this->_load_tool(self::SOURCE_EXTERNAL, 'js', $client_type, $is_pure),
         ];
-        self::_suffix_tool($resources['internal'], 'js');
-        self::_suffix_tool($resources['external'], 'js');
+        $this->_suffix_tool($resources['internal'], 'js');
+        $this->_suffix_tool($resources['external'], 'js');
         return $resources;
     }
 
@@ -170,7 +171,7 @@ class Ufa {
         }
 
         foreach($resources as & $val) {
-            $val = realPath($file_suffix, $resource_type, $resource_type . '/');
+            $val = $this->realPath($file_suffix, $resource_type, $resource_type . '/');
         }
         return $resources;
     }
