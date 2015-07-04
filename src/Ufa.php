@@ -11,10 +11,13 @@ class Ufa {
     public $dest_dir = 'dist/';
     public $compatible_ie = false;
 
+    public $data = [];
+
     private $host = '/';
 
     private $device_types = ['mobile', 'wechat'];//TODO::Add later.
     private $default = 'mobile';
+    private $main_filename = '';//TODO::Refine
     private $params = array();
 
     function __construct() {
@@ -164,14 +167,8 @@ class Ufa {
      * @return mixed
      */
     private function _suffix_tool(& $resources, $resource_type) {
-        if ($this->debug) {
-            $file_suffix = '.' . $resource_type . '?' . time();
-        } else {
-            $file_suffix = '.min.' . $resource_type;
-        }
-
         foreach($resources as & $val) {
-            $val = $this->realPath($file_suffix, $resource_type, $resource_type . '/');
+            $val = $this->realPath($val, $resource_type, $this->dest_dir . $resource_type . '/');
         }
         return $resources;
     }
@@ -299,6 +296,18 @@ class Ufa {
      */
     public function get_params() {
         return $this->params;
+    }
+
+    public function getData() {
+        return $this->data;
+    }
+
+    public function __get($key) {
+        return isset($this->data[$key]) ? $this->data[$key] : null;
+    }
+
+    public function __set($key, $value) {
+        $this->data[$key] = $value;
     }
 
     /**
