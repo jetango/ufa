@@ -1,11 +1,11 @@
 <?php
 
 if (!function_exists('ufa')) {
+
     /**
-     * Get the implementation of a repository or just the repository container.
-     *
-     * @param string|null $interface Repository interface name.
-     * @return \Angejia\Foundation\Domain\Interfaces\Repository|\Angejia\Foundation\Domain\RepositoryContainer
+     * Get ufa Instance
+     * @param null $interface
+     * @return \Angejia\Ufa\Ufa
      */
     function ufa($interface = null)
     {

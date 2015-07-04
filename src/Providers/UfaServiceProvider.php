@@ -25,7 +25,7 @@ class UfaServiceProvider extends ServiceProvider {
     public function register()
     {
         $this->app->singleton('UfaService', function($app) {
-            return new Ufa();;
+            return new Ufa();
         });
     }
 
