@@ -41,7 +41,7 @@ class Ufa {
 //        $this->compatible_ie = Config::get('page.compatible_ie', false);
     }
 
-    public function path($path, $resource_type) {
+    public function realPath($path, $resource_type, $dest_dir = '') {
 
         if ($this->debug) {
             $path .= '.' . $resource_type;
@@ -49,7 +49,9 @@ class Ufa {
             $path .= '.min.' . $resource_type;
         }
 
-        return $this->dest_dir . $path;
+        $dest_dir = (null != $dest_dir) ? $dest_dir : $this->dest_dir;
+
+        return $dest_dir . $path;
 
     }
 
@@ -168,7 +170,7 @@ class Ufa {
         }
 
         foreach($resources as & $val) {
-            $val .= $file_suffix;
+            $val = realPath($file_suffix, $resource_type, $resource_type . '/');
         }
         return $resources;
     }
