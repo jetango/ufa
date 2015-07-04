@@ -14,7 +14,7 @@ class UfaServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        view()->composer('pages.*', 'Angejia\Ufa\Composers\UfaComposer');
+        view()->creator('pages.*', 'Angejia\Ufa\Composers\UfaComposer');
     }
 
     /**

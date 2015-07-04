@@ -7,24 +7,14 @@ use Illuminate\Contracts\View\View;
 
 class UfaComposer
 {
-    /**
-     * The user repository implementation.
-     *
-     * @var UserRepository
-     */
-    protected $users;
-
-    /**
-     * Create a new profile composer.
-     *
-     * @param  UserRepository  $users
-     * @return void
-     */
-//    public function __construct(UserRepository $users)
-//    {
-//        // Dependencies automatically resolved by service container...
-//        $this->users = $users;
-//    }
+    public function create(View $view)
+    {
+        ufa()->setName($view->name());
+        $view_data = array_diff_key(ufa()->getData(), $view->getData());
+        foreach($view_data as $key => $value) {
+            $view->with($key, $value);
+        }
+    }
 
     /**
      * Bind data to the view.
@@ -35,8 +25,8 @@ class UfaComposer
     public function compose(View $view)
     {
         ufa()->setName($view->name());
-        $viewData = ufa()->getData();
-        foreach($viewData as $key => $value) {
+        $view_data = array_diff_key(ufa()->getData(), $view->getData());
+        foreach($view_data as $key => $value) {
             $view->with($key, $value);
         }
     }

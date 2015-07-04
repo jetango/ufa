@@ -7,12 +7,8 @@ if (!function_exists('ufa')) {
      * @param null $interface
      * @return \Angejia\Ufa\Ufa
      */
-    function ufa($interface = null)
+    function ufa()
     {
-        if (isset($interface)) {
-            return app('UfaService')->get($interface);
-        }
-
         return app('UfaService');
     }
 }

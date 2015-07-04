@@ -1,6 +1,7 @@
 <?php namespace Angejia\Ufa;
 
 use Config;
+use Request;
 
 class Ufa {
     // START: new functions when unifying.
@@ -19,13 +20,6 @@ class Ufa {
     private $name = 'page';
     private $params = array();
 
-    function __construct() {
-        $this->debug = Config::get('app.debug');
-        $this->host = Config::get('page.host', '/');
-        $this->dest_dir = $this->host . ($this->debug ? '' : 'dist/');
-        $this->compatible_ie = Config::get('page.compatible_ie', false);
-    }
-
     private $external_resources = array(
         'js' => array(),
         'css' => array()
@@ -35,11 +29,45 @@ class Ufa {
         'css' => array()
     );
 
-    public function init() {echo 'UFA<br>';
-//        $this->debug = Config::get('app.debug');
-//        $this->host = Config::get('page.host', '/');
-//        $this->dest_dir = $this->host . ($this->debug ? '' : 'dist/');
-//        $this->compatible_ie = Config::get('page.compatible_ie', false);
+    function __construct() {
+        $this->debug = Config::get('app.debug');
+        $this->host = Config::get('page.host', '/');
+        $this->dest_dir = $this->host . ($this->debug ? '' : 'dist/');
+        $this->compatible_ie = Config::get('page.compatible_ie', false);
+    }
+
+    /**
+     * Get client type.
+     * @return string: browser/mobile/wechat/app
+     */
+    public function clientType()
+    {
+
+        $env_weiliao = 'weiliao';
+        $env__app = 'app';
+        $env_touch = 'touch';
+        $env_wechat = 'wechat';
+        $env_browser = 'browser';
+        $env_mobile = 'mobile';
+
+        $user_agent = Request::header('User-Agent');
+        $client = self::CONST_BROWSER;
+
+        // App
+        if (preg_match('/ClientType\/APP/', $user_agent) || self::CONST_WEILIAO === Request::get('from')) {
+            return self::CONST_APP;
+        }
+
+        // Mobile
+        if (preg_match('/Mobile/', $user_agent)) {
+            // wechat
+            $client = self::CONST_MOBILE;
+            if (preg_match('/MicroMessenger|NetType/', $user_agent)) {
+                $client = self::CONST_WECHAT;
+            }
+        }
+
+        return $client;
     }
 
     public function realPath($path, $resource_type = 'js', $dest_dir = null) {
