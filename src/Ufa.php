@@ -31,9 +31,9 @@ class Ufa {
 
     function __construct() {
         $this->debug = Config::get('app.debug');
-        $this->host = Config::get('page.host', '/');
+        $this->host = Config::get('ufa.host', '/');
         $this->dest_dir = $this->host . ($this->debug ? '' : 'dist/');
-        $this->compatible_ie = Config::get('page.compatible_ie', false);
+        $this->compatible_ie = Config::get('ufa.compatible_ie', false);
     }
 
     /**
@@ -42,28 +42,27 @@ class Ufa {
      */
     public function clientType()
     {
-
         $env_weiliao = 'weiliao';
-        $env__app = 'app';
+        $env_app = 'app';
         $env_touch = 'touch';
         $env_wechat = 'wechat';
         $env_browser = 'browser';
         $env_mobile = 'mobile';
 
         $user_agent = Request::header('User-Agent');
-        $client = self::CONST_BROWSER;
+        $client = $env_browser;
 
         // App
-        if (preg_match('/ClientType\/APP/', $user_agent) || self::CONST_WEILIAO === Request::get('from')) {
-            return self::CONST_APP;
+        if (preg_match('/ClientType\/APP/', $user_agent) || $env_weiliao === Request::get('from')) {
+            return $env_app;
         }
 
         // Mobile
         if (preg_match('/Mobile/', $user_agent)) {
             // wechat
-            $client = self::CONST_MOBILE;
+            $client = $env_mobile;
             if (preg_match('/MicroMessenger|NetType/', $user_agent)) {
-                $client = self::CONST_WECHAT;
+                $client = $env_wechat;
             }
         }
 
