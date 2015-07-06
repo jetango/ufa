@@ -43,7 +43,7 @@ class Ufa {
     public function clientType()
     {
         $env_weiliao = 'weiliao';
-        $env__app = 'app';
+        $env_app = 'app';
         $env_touch = 'touch';
         $env_wechat = 'wechat';
         $env_browser = 'browser';
@@ -54,7 +54,7 @@ class Ufa {
 
         // App
         if (preg_match('/ClientType\/APP/', $user_agent) || $env_weiliao === Request::get('from')) {
-            return $env__app;
+            return $env_app;
         }
 
         // Mobile
