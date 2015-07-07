@@ -13,9 +13,6 @@ class Ufa {
     public $compatible_ie = false;
     public $data = [];
 
-    private $host = '/';
-
-    private $device_types = ['mobile', 'wechat'];//TODO::Add later.
     private $default = 'mobile';
     private $name = 'page';
     private $params = array();
@@ -31,9 +28,11 @@ class Ufa {
 
     function __construct() {
         $this->debug = Config::get('app.debug');
-        $this->host = Config::get('ufa.host', '/');
-        $this->dest_dir = $this->host . ($this->debug ? '' : 'dist/');
         $this->compatible_ie = Config::get('ufa.compatible_ie', false);
+        $host = Config::get('ufa.host', '/');
+        $debug_dir = Config::get('ufa.debugdir', 'www/');
+        $built_dir = Config::get('ufa.builtdir', 'dist/');
+        $this->dest_dir = $host . ($this->debug ? $debug_dir : $built_dir);
     }
 
     /**
