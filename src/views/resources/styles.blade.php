@@ -1,5 +1,5 @@
 <?php
-    $file_name = $file_name ? $file_name : 'main';
+    $file_name = isset($file_name) ? $file_name : 'main';
 
     $static_resources = ufa()->loadStyles();
     $main = ufa()->realPath($file_name, 'css');
