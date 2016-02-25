@@ -1,7 +1,9 @@
 <?php
+    $file_name = $file_name ? $file_name : 'main';
+
     $static_resources = ufa()->loadStyles();
-    $main = ufa()->realPath('main', 'css');
-    $main_ie = ufa()->realPath('main-ie', 'css');
+    $main = ufa()->realPath($file_name, 'css');
+    $main_ie = ufa()->realPath($file_name . '-ie', 'css');
 ?>
 
 {{-- Load main style --}}
