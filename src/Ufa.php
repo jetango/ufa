@@ -12,6 +12,7 @@ class Ufa {
     public $dest_dir = 'dist/';
     public $compatible_ie = false;
     public $data = [];
+    public $manifest = [];
 
     private $default = 'mobile';
     private $name = 'page';
@@ -27,12 +28,14 @@ class Ufa {
     );
 
     function __construct() {
-        $this->debug = Config::get('app.debug');
+        $this->debug = Config::get('ufa.debug');
         $this->compatible_ie = Config::get('ufa.compatible_ie', false);
         $host = Config::get('ufa.host', '/');
         $debug_dir = Config::get('ufa.debugdir', 'www/');
         $built_dir = Config::get('ufa.builtdir', 'dist/');
         $this->dest_dir = $host . ($this->debug ? $debug_dir : $built_dir);
+        // init manifest
+        $this->manifest = $this->getManifest();
     }
 
     /**
@@ -68,12 +71,41 @@ class Ufa {
         return $client;
     }
 
+
+
+    /**
+     * Get normal path
+     * @param $from string, 'js/''
+     * @param $to string,  '../lib/list.js'
+     * @return string 'lib/list.js'
+     */
+    private function _normalizePath($from, $to) {
+        
+        $path = $from . $to;
+        $path = str_replace('../', '', $path, $count);
+        $parts = explode('/', $path);
+        $relative_path = implode('/', array_slice($parts, $count));
+        return $relative_path;
+    }
+
     public function realPath($path, $resource_type = 'js', $dest_dir = null) {
 
         if ($this->debug) {
             $path .= '.' . $resource_type;
         } else {
             $path .= '.min.' . $resource_type;
+
+            // for getting asset manifest 
+            $basedir = $resource_type . '/';
+            if (preg_match('/^main/', $path)) {
+                $basedir ='';
+            }
+            $asset_manifest = $this->_normalizePath($basedir, $path);
+
+            $hashfile = basename($this->asset($asset_manifest));
+            $dir = dirname($path);
+            $path = (($dir != '.') ? ($dir . '/') : '') . $hashfile;
+
         }
 
         $dest_dir = (null != $dest_dir) ? $dest_dir : $this->dest_dir;
@@ -330,6 +362,16 @@ class Ufa {
     public function getData() {
         return $this->data;
     }
+
+    public function getManifest() {
+        $file = @file_get_contents(storage_path('assets/manifest.json'));
+        return json_decode($file, true);
+    }
+
+    public function asset($path) {
+        return isset($this->manifest[$path]) ? $this->manifest[$path] : $path;
+    }
+
 
     public function __get($key) {
         return isset($this->data[$key]) ? $this->data[$key] : null;
