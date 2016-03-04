@@ -2,7 +2,6 @@
 
 use Config;
 use Request;
-use Log;
 
 class Ufa {
     // START: new functions when unifying.
@@ -107,7 +106,6 @@ class Ufa {
             $dir = dirname($path);
             $path = (($dir != '.') ? ($dir . '/') : '') . $hashfile;
 
-            \Log::debug('PATH: ' . $path);
         }
 
         $dest_dir = (null != $dest_dir) ? $dest_dir : $this->dest_dir;
@@ -366,7 +364,7 @@ class Ufa {
     }
 
     public function getManifest() {
-        $file = file_get_contents(storage_path('assets/manifest.json'));
+        $file = @file_get_contents(storage_path('assets/manifest.json'));
         return json_decode($file, true);
     }
 
