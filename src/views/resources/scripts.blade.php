@@ -1,7 +1,9 @@
 <?php
+    $file_name = isset($file_name) ? $file_name : 'main';
+
     $static_resources = ufa()->loadScripts();
-    $main = ufa()->realPath('main', 'js');
-    $main_ie = ufa()->realPath('main-ie', 'js');
+    $main = ufa()->realPath($file_name, 'js');
+    $main_ie = ufa()->realPath($file_name . '-ie', 'js');
     $params = ufa()->getParams();
 ?>
 
