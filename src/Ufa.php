@@ -95,14 +95,14 @@ class Ufa {
         } else {
             $path .= '.min.' . $resource_type;
 
-            // for getting asset manifest 
+            // for getting asset hash mapping
             $basedir = $resource_type . '/';
             if (preg_match('/^main/', $path)) {
                 $basedir ='';
             }
             $asset_manifest = $this->_normalizePath($basedir, $path);
 
-            $hashfile = basename($this->asset($asset_manifest));
+            $hashfile = basename($this->hashmap($asset_manifest));
             $dir = dirname($path);
             $path = (($dir != '.') ? ($dir . '/') : '') . $hashfile;
 
@@ -112,6 +112,10 @@ class Ufa {
 
         return $dest_dir . $path;
 
+    }
+
+    public function asset($path) {
+        return $this->dest_dir . $this->hashmap($path);
     }
 
     public function setName($name) {
@@ -368,7 +372,7 @@ class Ufa {
         return json_decode($file, true);
     }
 
-    public function asset($path) {
+    public function hashmap($path) {
         return isset($this->manifest[$path]) ? $this->manifest[$path] : $path;
     }
 
