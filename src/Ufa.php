@@ -308,10 +308,29 @@ class Ufa {
     }
 
     /**
+     * Alias for function addExternalJs
+     * @param array $data
+     * @param string $type client type.
+     */
+    public function extJs($data = array(), $type = '') {
+        self::addExternals('js', $data, $type);
+    }
+
+
+    /**
      * @param array $data
      * @param string $type client type.
      */
     public function addExternalCss($data = array(), $type = '') {
+        self::addExternals('css', $data, $type);
+    }
+
+    /**
+     * Alias for function addExternalCss
+     * @param array $data
+     * @param string $type client type.
+     */
+    public function extCss($data = array(), $type = '') {
         self::addExternals('css', $data, $type);
     }
 
