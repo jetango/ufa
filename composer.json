@@ -4,7 +4,7 @@
   "license": "proprietary",
   "require": {
     "php": ">=5.5.9",
-    "laravel/framework": "5.1.*"
+    "laravel/framework": "5.4.*"
   },
   "require-dev": {
   },
@@ -23,11 +23,7 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "http://pkg.corp.angejia.com/repo/private/"
-    },
-    {
-      "type": "composer",
-      "url": "http://pkg.corp.angejia.com/repo/packagist/"
+      "url": "https://github.com/jetango/ufa/"
     },
     {"packagist": false}
   ]
